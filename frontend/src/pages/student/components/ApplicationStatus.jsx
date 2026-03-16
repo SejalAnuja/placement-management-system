@@ -1,8 +1,10 @@
 export default function ApplicationStatus({ applications }) {
+
   const statusCounts = {
     Pending: 0,
     Shortlisted: 0,
     Rejected: 0,
+    Applied: 0
   };
 
   applications.forEach((a) => {
@@ -10,16 +12,36 @@ export default function ApplicationStatus({ applications }) {
   });
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow mb-8">
-      <h2 className="text-xl font-semibold mb-4">Application Status</h2>
-      <div className="flex gap-6">
+    <div className="bg-white p-5 sm:p-6 rounded-xl shadow mb-8">
+
+      <h2 className="text-xl font-semibold mb-6">
+        Application Status
+      </h2>
+
+      {/* Responsive grid instead of flex */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+
         {Object.entries(statusCounts).map(([status, count]) => (
-          <div key={status} className="text-center">
-            <p className="font-bold text-lg">{count}</p>
-            <p className="text-gray-600">{status}</p>
+
+          <div
+            key={status}
+            className="bg-gray-50 rounded-lg p-4 text-center hover:shadow transition"
+          >
+
+            <p className="text-2xl font-bold text-gray-800">
+              {count}
+            </p>
+
+            <p className="text-sm text-gray-600">
+              {status}
+            </p>
+
           </div>
+
         ))}
+
       </div>
+
     </div>
   );
 }

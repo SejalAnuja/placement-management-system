@@ -1,12 +1,15 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { LogOut, UserCog, BarChart3 } from "lucide-react";
+import { LogOut, UserCog, BarChart3, Menu, X } from "lucide-react";
 
 export default function AdminLayout() {
+
   const location = useLocation();
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -23,20 +26,33 @@ export default function AdminLayout() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Top Navbar */}
+
+      {/* Navbar */}
       <nav className="bg-gradient-to-r from-blue-700 to-blue-900 text-white shadow-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+
+          {/* Logo */}
           <div className="flex items-center gap-2">
-            <BarChart3 className="h-8 w-8 text-white" />
-            <h1 className="text-2xl font-bold tracking-wide">PIMS Admin Panel</h1>
+
+            <BarChart3 className="h-7 w-7" />
+
+            <h1 className="text-lg sm:text-xl font-bold">
+              PIMS Admin
+            </h1>
+
           </div>
 
-          <div className="flex gap-6">
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex gap-6">
+
             {links.map((link) => (
+
               <Link
                 key={link.path}
                 to={link.path}
-                className={`font-medium transition ${
+                className={`text-sm font-medium transition ${
                   location.pathname === link.path
                     ? "border-b-2 border-white"
                     : "opacity-80 hover:opacity-100"
@@ -44,26 +60,78 @@ export default function AdminLayout() {
               >
                 {link.label}
               </Link>
+
             ))}
+
           </div>
 
-          <div className="flex items-center gap-3">
-            <UserCog className="h-5 w-5" />
+
+          {/* Right Section */}
+          <div className="flex items-center gap-4">
+
+            <UserCog className="h-5 w-5 hidden sm:block" />
+
             <button
               onClick={handleLogout}
-              className="bg-white text-blue-600 px-3 py-1 rounded-md font-semibold hover:bg-gray-100"
+              className="hidden sm:flex items-center gap-1 bg-white text-blue-600 px-3 py-1 rounded-md text-sm font-semibold hover:bg-gray-100"
             >
-              <LogOut className="inline h-4 w-4 mr-1" />
+              <LogOut className="h-4 w-4" />
               Logout
             </button>
+
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden"
+            >
+              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+
           </div>
+
         </div>
+
+
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+
+          <div className="md:hidden bg-blue-900 px-4 pb-4">
+
+            {links.map((link) => (
+
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setMobileMenuOpen(false)}
+                className="block py-2 border-b border-blue-800"
+              >
+                {link.label}
+              </Link>
+
+            ))}
+
+            <button
+              onClick={handleLogout}
+              className="block py-2 mt-2 text-left text-red-300"
+            >
+              Logout
+            </button>
+
+          </div>
+
+        )}
+
       </nav>
 
+
       {/* Page Content */}
-      <main className="max-w-7xl mx-auto p-6">
+      <main className="max-w-7xl mx-auto px-4 py-6">
+
         <Outlet />
+
       </main>
+
     </div>
   );
 }
