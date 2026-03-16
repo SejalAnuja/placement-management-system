@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://placement-management-system-77mf.onrender.com/api",
   withCredentials: true,  // backend URL
 });
 
