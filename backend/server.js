@@ -13,17 +13,11 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(
-  cors({
-    origin: [
-    "http://localhost:5173",
-    "https://placement-management-system-mauve.vercel.app/login"
-  ], // ✅ Your frontend URL
-    credentials: true,               // ✅ Allow cookies / tokens
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);                // Allow cross-origin requests (React ↔ Node)
+
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.use(express.json());        // Parse incoming JSON requests
 
 // Test Route
